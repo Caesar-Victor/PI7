@@ -3,6 +3,8 @@ from GCodeLexer import GCodeLexer
 from GCodeParser import GCodeParser
 from GCodeListener import GCodeListener
 import serial as sc
+import time
+
 
 # Função para configurar a comunicação serial
 def setup_serial(port, baudrate):
@@ -71,12 +73,7 @@ def main():
     print(listener.coordenadas)
 
     # Loop para processar comandos adicionais
-    while True:
-        command = input("Digite um comando (START, PAUSE): ").strip().upper()
-        process_command(command, ser)
 
-    # Fechar conexões (não será alcançado devido ao loop infinito)
-    ser.close()
 
 if __name__ == '__main__':
     main()
