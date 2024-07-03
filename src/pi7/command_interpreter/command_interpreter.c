@@ -28,24 +28,10 @@
 
 
 // communication with TrajectoryController
-extern xQueueHandle qControlCommands;
-
-int pico_registers[MAX_REGISTER_COUNT];
+extern xQueueHandle qControlCommands;  
 
 void ctl_init()
 {
-   pico_registers[REG_START] = 0;
-   pico_registers[REG_PAUSE] = 0;
-   pico_registers[REG_RESUME] = 0;
-   pico_registers[REG_STOP] = 0;
-   pico_registers[REG_JOGX] = 0;
-   pico_registers[REG_JOGY] = 0;
-   pico_registers[STEP_X] = 0;
-   pico_registers[STEP_Y] = 0;
-   pico_registers[REG_X] = 0;
-   pico_registers[REG_Y] = 0;
-   pico_registers[REG_LINE] = 0;
-   pico_registers[REG_PROG] = 0;
 } // ctl_init
 
 /************************************************************************
@@ -85,11 +71,11 @@ int ctl_WriteRegister(int registerToWrite, int value)
 {
    // TODO: implementar
    tcl_Data command;
-   printf("Register %d Value %d\n", registerToWrite, value);
+   //printf("Register %d Value %d\n", registerToWrite, value);
    switch (registerToWrite)
    {
    case REG_START:
-      printf("start program\n");
+      //printf("start program\n");
       command.command = CMD_START;
       xQueueSend(qControlCommands, &command, portMAX_DELAY);
       break;
@@ -106,7 +92,7 @@ int ctl_WriteRegister(int registerToWrite, int value)
       xQueueSend(qControlCommands, &command, portMAX_DELAY);
       break;
    default:
-      printf("unknown register to write\n");
+      //printf("unknown register to write\n");
       break;
    } // switch
    return true; // TRUE;
@@ -122,7 +108,7 @@ int ctl_WriteRegister(int registerToWrite, int value)
  Retorno:
     TRUE se escrita foi aceita, FALSE caso contrario.
 *************************************************************************/
-int ctl_WriteProgram(char *program_bytes)
+int ctl_WriteProgram(char* program_bytes)
 {
    return tpr_storeProgram(program_bytes);
 } // ctl_WriteRegister
