@@ -93,6 +93,7 @@ def ativa_resposta(resposta):
     elif resposta == b'p':
         send_modbus_message_pause()
     elif resposta == b'i':
+        print("Enviado posicao inicial")
         send_modbus_init_point()
 
     elif resposta[0:7] == b':010301':
@@ -202,6 +203,9 @@ def main():
         
         a = ser.read(25)
         print("Read: ", a)
+
+        if e == 'e':
+            break
 
         
                 

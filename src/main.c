@@ -166,7 +166,7 @@ static void initComponents(void) {
   tst_init(); // trajectory state
   tpr_init(); // trajectory program
 
-  pic_set(1,0,0,1,0,0);
+  pic_set(10,10,0,0,0,0);
 
 } // initComponents
 
