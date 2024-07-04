@@ -53,7 +53,7 @@ linha=0
 def init_serial():
     global ser
     ser = serial.Serial(
-        port='/dev/ttyUSB0',
+        port='COM15',
         baudrate=115200,
         parity=serial.PARITY_NONE,
         stopbits=serial.STOPBITS_ONE,
