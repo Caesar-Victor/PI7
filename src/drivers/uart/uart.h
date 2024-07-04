@@ -34,7 +34,7 @@
 uint8_t UARTInit( uint8_t portNum, uint32_t Baudrate );
 void UART0_IRQHandler( void );
 void UART1_IRQHandler( void );
-void UARTSend( uint8_t portNum, uint8_t *BufferPtr, uint32_t Length );
+void UARTSend( uint8_t portNum, uint8_t *BufferPtr);
 void UARTSendNullTerminated( uint8_t portNum, uint8_t *BufferPtr);
 uint8_t UARTGetChar( uint8_t portNum, uint8_t blocking );
 bool UARTIsEnabled(uint8_t portNum);
