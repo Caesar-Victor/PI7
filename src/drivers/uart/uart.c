@@ -387,12 +387,12 @@ uint8_t UARTGetChar( uint8_t portNum, uint8_t blocking ) {
 ** Returned value:		None
 ** 
 *****************************************************************************/
-void UARTSend( uint8_t portNum, uint8_t *BufferPtr, uint32_t Length ) {
+void UARTSend( uint8_t portNum, uint8_t *BufferPtr ) {
 
   // uart_putc_raw((portNum==0 ? uart0 : uart1), 'a'); // [jo:231004] meu teste
 
   if ( portNum == 0 ) { // UART0
-    while ( Length-- != 0 ) {
+    while ( *BufferPtr != 0 ) {
       // /* THRE status, contain valid data */
       // while (!(UART0TxEmpty & 0x01));	
       // LPC_UART0->THR = *BufferPtr;
@@ -400,10 +400,12 @@ void UARTSend( uint8_t portNum, uint8_t *BufferPtr, uint32_t Length ) {
       //UART0TxEmpty = 0;	/* not empty in the THR until it shifts out */ // [jo:231004] tem que ser fora do while
       //BufferPtr++;
       //Length--;
+      //cyw43_delay_ms(5);
+      
     }
     // UART0TxEmpty = 0;	/* not empty in the THR until it shifts out */ // [jo:231004] movido para cá
   } else {
-    while ( Length-- != 0 ) {
+    while ( *BufferPtr != 0 ) {
       // /* THRE status, contain valid data */
       // while (!(UART1TxEmpty & 0x01));	
       // LPC_UART1->THR = *BufferPtr;
@@ -411,6 +413,8 @@ void UARTSend( uint8_t portNum, uint8_t *BufferPtr, uint32_t Length ) {
       //UART1TxEmpty = 0;	/* not empty in the THR until it shifts out */ // [jo:231004] tem que ser fora do while
       //BufferPtr++;
       //Length--;
+      //cyw43_delay_ms(5);
+      
     }
     // UART1TxEmpty = 0;	/* not empty in the THR until it shifts out */ // [jo:231004] movido para cá
   }

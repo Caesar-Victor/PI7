@@ -27,8 +27,8 @@ extern xQueueHandle qCommPIC2;
 extern xQueueHandle qControlCommands;
 
 #define PI 31415
-#define L1 170
-#define L2 200
+#define L1 210
+#define L2 247
 #define SCALE 120
 
 //manda para o PIC um setpoint
@@ -116,8 +116,8 @@ void tcl_processCommand(tcl_Data data) {
 } // trj_executeCommand
 
 void tcl_init() {
-  //  tcl_status = STATUS_NOT_RUNNING;
-  tcl_Data start;
-  start.command = CMD_START;
-  xQueueSend(qControlCommands, &start, portMAX_DELAY);
+   tcl_status = STATUS_NOT_RUNNING;
+  // tcl_Data start;
+  // start.command = CMD_START;
+  // xQueueSend(qControlCommands, &start, portMAX_DELAY);
 } // init
