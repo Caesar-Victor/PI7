@@ -11,10 +11,12 @@
 #include "queue.h"
 #include "projdefs.h"
 
+
 // std includes
 #include <stdint.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
 // PICO W include
 //#include "hardware/uart.h"
@@ -52,6 +54,7 @@
 #define READ_REGISTER 0x03
 #define WRITE_REGISTER 0x06
 #define WRITE_FILE 0x15
+#define PARAM 0X08
 
 // Defines de uso geral
 #define MB_NO_CHAR 0xff
@@ -255,7 +258,7 @@ void processReadRegister() {
   int registerValue;
   byte lrc;
 
-  registerToRead  = (decode(rxBuffer[7], rxBuffer[8]);
+  registerToRead  = decode(rxBuffer[7], rxBuffer[8]);
   // Aciona controller para obter valor. Note que a informacao
   // ate´ poderia ser acessada diretamente. Mas a arquitetura MVC
   // exige que todas as interacoes se deem atraves do controller.
@@ -298,8 +301,8 @@ void processWriteRegister() {
   txBuffer[2] = encodeLow(MY_ADDRESS);
   txBuffer[3] = encodeHigh(WRITE_REGISTER);
   txBuffer[4] = encodeLow(WRITE_REGISTER);
-  txBuffer[5] = encodeHigh(1); // byte count field  (high part)
-  txBuffer[6] = encodeLow(1);  // byte count field (low part)
+  txBuffer[5] = encodeHigh(2); // byte count field  (high part)
+  txBuffer[6] = encodeLow(2);  // byte count field (low part)
   txBuffer[7] = encodeHigh(registerToWrite);
   txBuffer[8] = encodeLow(registerToWrite);
   txBuffer[9] = encodeHigh(registerValue);
@@ -317,7 +320,7 @@ void processWriteRegister() {
 void processWriteFile() {
 	// TODO: implementar
   int n = decode(rxBuffer[5], rxBuffer[6]);
-  char pontos[n*(6+2) +1];
+  char* pontos = (char*) malloc(n*(6+2) +1);
   byte lrc;
   int check = false;
 
@@ -327,9 +330,9 @@ void processWriteFile() {
     pontos[1 + 15*i] = rxBuffer[8 + i*6];
     pontos[2 + 15*i] = rxBuffer[9 + i*6];
     pontos[4 + 15*i] = '-';
-    pontos[5 + 15*i] = rxBuffer[11 + i*6];
-    pontos[6 + 15*i] = rxBuffer[12 + i*6];
-    pontos[7 + 15*i] = rxBuffer[13 + i*6];
+    pontos[5 + 15*i] = rxBuffer[10 + i*6];
+    pontos[6 + 15*i] = rxBuffer[11 + i*6];
+    pontos[7 + 15*i] = rxBuffer[12 + i*6];
     pontos[9 + 15*i] = '-';
   }
 
@@ -354,6 +357,8 @@ void processWriteFile() {
 
   // Envia o buffer montado pela porta serial USB
   sendTxBufferToSerialUSB();
+
+  free(pontos);
 } // processWriteProgram
 
 /************************************************************************
@@ -367,6 +372,40 @@ void processWriteFile() {
 int decodeFunctionCode() {
    return decode(rxBuffer[3], rxBuffer[4]);
 } // extractFunctionCode
+
+void enviaGanho(){
+
+  int kpa, kpb, kia, kib, kda, kdb;
+  byte lrc;
+
+  kpa = (rxBuffer[7]-48)*100 + (rxBuffer[8]-48)*10 + (rxBuffer[9]-48);
+  kia = (rxBuffer[10]-48)*100 + (rxBuffer[11]-48)*10 + (rxBuffer[12]-48);
+  kda = (rxBuffer[13]-48)*100 + (rxBuffer[14]-48)*10 + (rxBuffer[15]-48);
+  kpb = (rxBuffer[16]-48)*100 + (rxBuffer[17]-48)*10 + (rxBuffer[18]-48);
+  kib = (rxBuffer[19]-48)*100 + (rxBuffer[20]-48)*10 + (rxBuffer[21]-48);
+  kdb = (rxBuffer[22]-48)*100 + (rxBuffer[23]-48)*10 + (rxBuffer[24]-48);
+
+  pic_set(kpa, kpb, kia, kib, kda, kdb);
+
+  txBuffer[0] = ':';
+  txBuffer[1] = encodeHigh(MY_ADDRESS);
+  txBuffer[2] = encodeLow(MY_ADDRESS);
+  txBuffer[3] = encodeHigh(PARAM);
+  txBuffer[4] = encodeLow(PARAM);
+  txBuffer[5] = encodeHigh(1); // byte count field  (high part)
+  txBuffer[6] = encodeLow(1);  // byte count field (low part)
+  txBuffer[7] = encodeHigh(1);
+  txBuffer[8] = encodeLow(1);
+  lrc = calculateLRC(txBuffer, 1, 8); // modified
+  txBuffer[9] = encodeHigh(lrc);
+  txBuffer[10] = encodeLow(lrc);
+  txBuffer[11] = 0x0d;
+  txBuffer[12] = 0x0a;
+  txBuffer[13] = 0; // null to end as string
+
+  sendTxBufferToSerialUSB();
+
+}
 
 /************************************************************************
  processMessage
@@ -392,6 +431,7 @@ void processMessage() { // OK!
     case WRITE_FILE:
       processWriteFile();
       break;
+    case PARAM:
     } // switch on FunctionCode
   }
   _state = HUNTING_FOR_START_OF_MESSAGE;

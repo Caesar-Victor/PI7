@@ -26,24 +26,21 @@
 void pic_init(void){  
 } // pic_init
 
-void pic_set(void){
-  int k = 1;   // a acertar
-  int Td = 1;
-  int Ti = 1;
+void pic_set(int kpa, int kpb, int kia, int kib, int kda, int kdb){
 
   uint8_t out[32];
 
-  sprintf((char*)out, "%c%c%c%d%c\n", ':', 'a', 'g', k, ';');
+  sprintf((char*)out, "%c%c%c%d%c\n", ':', 'a', 'g', kpa, ';');
   UARTSendNullTerminated(0, out);  // envia para UART 0 
-  sprintf((char*)out, "%c%c%c%d%c\n", ':', 'b', 'g', k, ';');
+  sprintf((char*)out, "%c%c%c%d%c\n", ':', 'b', 'g', kpb, ';');
   UARTSendNullTerminated(1, out);  // envia para UART 1
-  sprintf((char*)out, "%c%c%c%d%c\n", ':', 'a', 'd', Td, ';');
+  sprintf((char*)out, "%c%c%c%d%c\n", ':', 'a', 'd', kda, ';');
   UARTSendNullTerminated(0, out);  // envia para UART 0 
-  sprintf((char*)out, "%c%c%c%d%c\n", ':', 'b', 'd',Td , ';');
+  sprintf((char*)out, "%c%c%c%d%c\n", ':', 'b', 'd', kdb, ';');
   UARTSendNullTerminated(1, out);  // envia para UART 1
-  sprintf((char*)out, "%c%c%c%d%c\n", ':', 'a', 'i', Ti, ';');
+  sprintf((char*)out, "%c%c%c%d%c\n", ':', 'a', 'i', kia, ';');
   UARTSendNullTerminated(0, out);  // envia para UART 0 
-  sprintf((char*)out, "%c%c%c%d%c\n", ':', 'b', 'i', Ti, ';');
+  sprintf((char*)out, "%c%c%c%d%c\n", ':', 'b', 'i', kib, ';');
   UARTSendNullTerminated(1, out);  // envia para UART 1
 }
 

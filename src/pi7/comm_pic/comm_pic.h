@@ -17,7 +17,7 @@ typedef struct {
 } pic_Data;
 
 void pic_init(void);
-void pic_set(void);
+void pic_set(int kpa, int kpb, int kia, int kib, int kda, int kdb);
 void pic_sendToPIC(uint8_t portNum, pic_Data data);
 uint8_t pic_receiveCharFromPIC(uint8_t portNum);
 

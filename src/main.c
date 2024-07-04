@@ -49,6 +49,8 @@
 const portTickType DELAY_1SEC = 1000 / portTICK_RATE_MS;
 const portTickType DELAY_500MS = 500 / portTICK_RATE_MS;
 const portTickType DELAY_200MS = 200 / portTICK_RATE_MS;
+const portTickType DELAY_20MS = 20 / portTICK_RATE_MS;
+
 
 //void __error__(char *pcFilename, unsigned long ulLine) {
 //}
@@ -164,7 +166,7 @@ static void initComponents(void) {
   tst_init(); // trajectory state
   tpr_init(); // trajectory program
 
-  pic_set();
+  pic_set(1,0,0,1,0,0);
 
 } // initComponents
 
