@@ -114,9 +114,9 @@ void taskCommPIC(void *pvParameters) {
     // UARTSend(0, (uint8_t*)"3", 1); // [jo:231004] teste
     // UARTSend(1, (uint8_t*)"3", 1); // [jo:231004] teste
 
-    if (xQueueReceive(qCommPIC1, &setpoints1, pdMS_TO_TICKS(250)) == pdPASS)
+    if (xQueueReceive(qCommPIC1, &setpoints1, pdMS_TO_TICKS(210)) == pdPASS)
       pic_sendToPIC(0, setpoints1); // portMAX_DELAY); // [jo:231004] 250 ms no meu teste
-    if (xQueueReceive(qCommPIC2, &setpoints2, pdMS_TO_TICKS(250)) == pdPASS)
+    if (xQueueReceive(qCommPIC2, &setpoints2, pdMS_TO_TICKS(210)) == pdPASS)
       pic_sendToPIC(1, setpoints2); // portMAX_DELAY); // [jo:231004] 250 ms no meu teste
     //vTaskDelay(DELAY_200MS); // [jo:230928] eu coloquei, precisa?
   } //task loop

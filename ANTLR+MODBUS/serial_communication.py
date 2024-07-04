@@ -7,7 +7,7 @@ import serial.tools.list_ports
 import time
 
 class WalkListener(GCodeListener):
-    def __init__(self, serial):
+    def __init__(self):
         self.traj=""
         self.linha_ponto=0
 
@@ -38,9 +38,7 @@ def varreGCode():
     listener = WalkListener(ser)
     walker = ParseTreeWalker()
     walker.walk(listener, tree)
-    return (data, listener.linha_ponto, listener.traj)
-
-
+    return (listener.linha_ponto, listener.traj)
 
 
 global ser 
@@ -54,24 +52,15 @@ linha=0
 
 def init_serial():
     global ser
-    ports = list(serial.tools.list_ports.comports())
-    com5_available = any(port.device == 'COM5' for port in ports)
-    
-    if com5_available:
-        try:
-            ser = serial.Serial(
-                port='COM5',
-                baudrate=115200,
-                parity=serial.PARITY_NONE,
-                stopbits=serial.STOPBITS_ONE,
-                bytesize=serial.EIGHTBITS,
-                timeout=0.5,
-            )
-            print("COMx aberto com sucesso!")
-        except serial.SerialException as e:
-            print(f"Erro: {e}")
-    else:
-        print("COMx não disponível!")
+    ser = serial.Serial(
+        port='/dev/ttyUSB0',
+        baudrate=115200,
+        parity=serial.PARITY_NONE,
+        stopbits=serial.STOPBITS_ONE,
+        bytesize=serial.EIGHTBITS,
+        timeout=0.5,
+    )
+            
 
 def send_modbus_message_pause():
     msg = b':010602010115\r\n\r'
@@ -96,9 +85,6 @@ def ativa_resposta(resposta):
         send_modbus_message_stop()
     elif resposta == b'p':
         send_modbus_message_pause()
-    elif resposta == b't':
-
-
 
     elif resposta[0:7] == b':010301':
         linha = int(resposta[7:9].decode(), 16)
@@ -134,7 +120,7 @@ def comando(comando): #### CHECK ####
 
 def traj_envio(): #### CHECK ####
     global ser
-    data, total_pontos, traj = varreGCode()
+    total_pontos, traj = varreGCode()
     
     #Converte o número de pontos pointsNumber para um 
     #formato hexadecimal de dois dígitos.
@@ -191,12 +177,14 @@ def obtem_linha(): #### CHECK ####
         ativa_resposta(resposta)
         print("Linha:", linha)
 
-def __main__():
+def main():
+    global ser
     init_serial()
     parametros()
-    while():
+    while(1):
         time.sleep(3)
-        e = ser.read(1)
-        if e in [b'S', b's', b'p', b't']:
-            ativa_resposta(e)
-        
+        e = input()
+        print(e)
+        ser.write(b':010602000116\r\n\r')
+                
+main()
