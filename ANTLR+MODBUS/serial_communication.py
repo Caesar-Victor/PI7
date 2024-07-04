@@ -15,13 +15,13 @@ class WalkListener(GCodeListener):
         if ctx.codfunc() is not None:
             pass
         if ctx.coordx() is not None:
-            self.trajectoryFile += "{:03d}".format(int(ctx.coordx().coord().getText()))
+            self.traj += "{:03d}".format(int(ctx.coordx().coord().getText()))
         else:
-            self.trajectoryFile += "000"
+            self.traj += "000"
         if ctx.coordy() is not None:
-            self.trajectoryFile += "{:03d}".format(int(ctx.coordy().coord().getText()))
+            self.traj += "{:03d}".format(int(ctx.coordy().coord().getText()))
         else:
-            self.trajectoryFile += "000"
+            self.traj += "000"
 
         self.linha_ponto += 1
 
@@ -35,7 +35,7 @@ def varreGCode():
     stream = CommonTokenStream(lexer)
     parser = GCodeParser(stream)
     tree = parser.gcode()
-    listener = WalkListener(ser)
+    listener = WalkListener()
     walker = ParseTreeWalker()
     walker.walk(listener, tree)
     return (listener.linha_ponto, listener.traj)
@@ -53,7 +53,7 @@ linha=0
 def init_serial():
     global ser
     ser = serial.Serial(
-        port='/dev/ttyUSB0',
+        port='/dev/ttyACM0',
         baudrate=115200,
         parity=serial.PARITY_NONE,
         stopbits=serial.STOPBITS_ONE,
@@ -181,10 +181,17 @@ def main():
     global ser
     init_serial()
     parametros()
+    e = ""
+    a = ""
+    traj_envio()
+    print('Ready: ')
     while(1):
         time.sleep(3)
         e = input()
-        print(e)
-        ser.write(b':010602000116\r\n\r')
+
+        ativa_resposta(e)    
+        
+        a = ser.read(25)
+        print("Read: ", a)
                 
 main()

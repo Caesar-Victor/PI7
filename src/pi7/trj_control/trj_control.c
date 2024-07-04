@@ -27,8 +27,8 @@ extern xQueueHandle qCommPIC2;
 extern xQueueHandle qControlCommands;
 
 #define PI 31415
-#define L1 170
-#define L2 200
+#define L1 213
+#define L2 247
 #define SCALE 120
 
 //manda para o PIC um setpoint
