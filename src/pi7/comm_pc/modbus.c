@@ -10,6 +10,7 @@
 #include "portmacro.h"
 #include "queue.h"
 #include "projdefs.h"
+#include "comm_pic.h"
 
 
 // std includes
