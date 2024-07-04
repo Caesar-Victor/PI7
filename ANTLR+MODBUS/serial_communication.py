@@ -77,6 +77,13 @@ def send_modbus_message_stop():
     ser.write(msg)
     print(f"Enviado comando start: {msg}")
 
+def send_modbus_init_point():
+    ponto_inicial = b':011501-160420'
+    ponto_inicial += calculaLRC(ponto_inicial)
+    ponto_inicial += b'\x0D\x0A'
+    ser.write(ponto_inicial)
+    print("Mensagem de ponto inicial enviada: ", ponto_inicial)
+
 def ativa_resposta(resposta):
     global linha
     if resposta == b'S': # Se receber 'S', envia o comando de start
@@ -85,6 +92,8 @@ def ativa_resposta(resposta):
         send_modbus_message_stop()
     elif resposta == b'p':
         send_modbus_message_pause()
+    elif resposta == b'i':
+        send_modbus_init_point()
 
     elif resposta[0:7] == b':010301':
         linha = int(resposta[7:9].decode(), 16)
@@ -193,5 +202,7 @@ def main():
         
         a = ser.read(25)
         print("Read: ", a)
+
+        
                 
 main()
