@@ -42,27 +42,13 @@ def varreGCode():
 
 
 
-# Constantes para os estados
-ESPERANDO_TRAJ = 0
-INATIVO = 1
-ATIVO = 2
-PAUSADO = 3
 
-# Constantes para os eventos
-SEM_EVENTO = 0
-TRAJ_CARREGADA = 1
-START = 2
-PAUSE = 3
-RESUME = 4
-STOP = 5
-
-global estado
 global ser 
 
-estado = ESPERANDO_TRAJ
 
 global comandoAtivo
 comandoAtivo = 0
+
 global linha
 linha=0
 
@@ -104,7 +90,6 @@ def send_modbus_message_stop():
 
 def ativa_resposta(resposta):
     global linha
-    global estado
     if resposta == b'S': # Se receber 'S', envia o comando de start
         send_modbus_message_start()
     elif resposta == b's':
@@ -115,30 +100,9 @@ def ativa_resposta(resposta):
 
 
 
-    if resposta== b':010602000116\r\n\r':
-        if state == INATIVO:
-            state = ATIVO
-            print("Start.")
-    elif resposta== b':0115010177\r\n\r':
-        state == INATIVO
-        state = INATIVO
-        print("Traj. in.")
-    elif resposta == b':010602010115\r\n\r':
-        if state == ATIVO:
-            state = PAUSADO
-            print("Pause.")
-    elif resposta == b':010602030113\r\n\r':
-        if state == PAUSADO:
-            state = ATIVO
-            print("Resume.")
-    elif resposta == b':010602020114\r\n\r':
-        if state == ATIVO or state == PAUSADO:
-            state = INATIVO
-            linha = 0
-            print("Stop.")
     elif resposta[0:7] == b':010301':
-        linhaAtual = int(resposta[7:9].decode(), 16)
-        print(f"Linha atual: {linhaAtual + 1}")
+        linha = int(resposta[7:9].decode(), 16)
+        print(f"Linha atual: {linha + 1}")
     else:
         pass
 
@@ -190,20 +154,23 @@ def traj_envio(): #### CHECK ####
 
 def parametros(): #### CHECK #### AINDA FALTA CHAMAR A FUNÇÃO
     global ser
-    kpA = 0
-    kiA = 0
-    kdA = 0
-    kpB = 0
-    kiB = 0
-    kdB = 0
+
+    #definir de acordo com o que for necessário
+
+    kpa = 0
+    kia = 0
+    kda = 0
+    kpb = 0
+    kib = 0
+    kdb = 0
     # Send the data
     msg = b':010806'
-    msg += ("{:03d}".format(kpA).encode())
-    msg += ("{:03d}".format(kiA).encode())
-    msg += ("{:03d}".format(kdA).encode())
-    msg += ("{:03d}".format(kpB).encode())
-    msg += ("{:03d}".format(kiB).encode())
-    msg += ("{:03d}".format(kdB).encode())
+    msg += ("{:03d}".format(kpa).encode())
+    msg += ("{:03d}".format(kia).encode())
+    msg += ("{:03d}".format(kda).encode())
+    msg += ("{:03d}".format(kpb).encode())
+    msg += ("{:03d}".format(kib).encode())
+    msg += ("{:03d}".format(kdb).encode())
     msg += calculaLRC(msg).encode()
     msg += b'\x0D\x0A'
     ser.write(msg)
@@ -224,5 +191,12 @@ def obtem_linha(): #### CHECK ####
         ativa_resposta(resposta)
         print("Linha:", linha)
 
-
-
+def __main__():
+    init_serial()
+    parametros()
+    while():
+        time.sleep(3)
+        e = ser.read(1)
+        if e in [b'S', b's', b'p', b't']:
+            ativa_resposta(e)
+        
