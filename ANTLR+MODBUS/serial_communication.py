@@ -48,7 +48,7 @@ linha=0
 def init_serial():
     global ser
     ser = serial.Serial(
-        port='/dev/ttyACM0',
+        port='/dev/ttyACM1',
         baudrate=115200,
         parity=serial.PARITY_NONE,
         stopbits=serial.STOPBITS_ONE,
@@ -71,14 +71,14 @@ def send_modbus_message_start():
 def send_modbus_message_stop():
     msg = b':010602020114\r\n\r'
     ser.write(msg)
-    print(f"Enviado comando start: {msg}")
+    print(f"Enviado comando stop: {msg}")
 
 def send_modbus_init_point():
-    ponto_inicial = b':011501-160420'
+    ponto_inicial = b':011501000420'
     ponto_inicial += calculaLRC(ponto_inicial).encode()
     ponto_inicial += b'\x0D\x0A'
     ser.write(ponto_inicial)
-    print("Mensagem de ponto inicial enviada: ", ponto_inicial)
+    print(f"Mensagem de ponto inicial enviada: {ponto_inicial}" )
 
 def protocolo_modbus(x):
     global linha
@@ -171,9 +171,6 @@ def main():
         e = input()
 
         protocolo_modbus(e)    
-        
-        a = ser.read(25)
-        print("Read: ", a)
 
         if e == 'e':
             break

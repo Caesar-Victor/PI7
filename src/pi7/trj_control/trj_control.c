@@ -10,6 +10,7 @@
 #include "FreeRTOS.h"
 #include "queue.h"
 #include <math.h>
+#include "task.h"
 
 #include <stdio.h>
 #include <stdlib.h> // para usar o comando malloc
@@ -117,7 +118,7 @@ void tcl_processCommand(tcl_Data data) {
 
 void tcl_init() {
    tcl_status = STATUS_NOT_RUNNING;
-  // tcl_Data start;
-  // start.command = CMD_START;
-  // xQueueSend(qControlCommands, &start, portMAX_DELAY);
+  //  tcl_Data start;
+  //  start.command = CMD_START;
+  //  xQueueSend(qControlCommands, &start, portMAX_DELAY);
 } // init
