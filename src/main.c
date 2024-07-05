@@ -50,6 +50,8 @@ const portTickType DELAY_1SEC = 1000 / portTICK_RATE_MS;
 const portTickType DELAY_500MS = 500 / portTICK_RATE_MS;
 const portTickType DELAY_200MS = 200 / portTICK_RATE_MS;
 const portTickType DELAY_20MS = 20 / portTICK_RATE_MS;
+const portTickType DELAY_2MS = 2 / portTICK_RATE_MS;
+
 
 
 //void __error__(char *pcFilename, unsigned long ulLine) {
@@ -71,7 +73,7 @@ void taskController(void *pvParameters) {
     // printf("1"); // [jo:231005] teste
 
     com_executeCommunication(); //internally, it calls Controller to process events
-    vTaskDelay(DELAY_200MS); // [jo:230929] TODO: por que não tem vTaskDelay() ? -> não, tem espera na fila
+    vTaskDelay(DELAY_2MS); // [jo:230929] TODO: por que não tem vTaskDelay() ? -> não, tem espera na fila
   } //task loop
 } // taskController
 
@@ -87,9 +89,6 @@ void taskNCProcessing(void *pvParameters) {
   tcl_Data data;
   lastWakeTime = xTaskGetTickCount();
   while(1) {
-
-    // printf("2"); // [jo:231005] teste
-
     data.command = NO_CMD;
     xQueueReceive(qControlCommands, &data, 0); //do not wait for command
     if (data.command != NO_CMD) {
@@ -109,16 +108,11 @@ void taskCommPIC(void *pvParameters) {
 	pic_Data setpoints2;
 
 	while(1) {
-            
-    //uart_putc_raw(uart0, '3'); // [jo:231004] teste
-    // UARTSend(0, (uint8_t*)"3", 1); // [jo:231004] teste
-    // UARTSend(1, (uint8_t*)"3", 1); // [jo:231004] teste
-
-    if (xQueueReceive(qCommPIC1, &setpoints1, pdMS_TO_TICKS(250)) == pdPASS)
+    if (xQueueReceive(qCommPIC1, &setpoints1, pdMS_TO_TICKS(210)) == pdPASS)
       pic_sendToPIC(0, setpoints1); // portMAX_DELAY); // [jo:231004] 250 ms no meu teste
-    if (xQueueReceive(qCommPIC2, &setpoints2, pdMS_TO_TICKS(250)) == pdPASS)
+    if (xQueueReceive(qCommPIC2, &setpoints2, pdMS_TO_TICKS(210)) == pdPASS)
       pic_sendToPIC(1, setpoints2); // portMAX_DELAY); // [jo:231004] 250 ms no meu teste
-    vTaskDelay(DELAY_200MS); // [jo:230928] eu coloquei, precisa?
+    vTaskDelay(DELAY_1SEC); // [jo:230928] eu coloquei, precisa?
   } //task loop
 } // taskCommPIC
 
@@ -166,7 +160,7 @@ static void initComponents(void) {
   tst_init(); // trajectory state
   tpr_init(); // trajectory program
 
-  pic_set(2,2,0,0,0,0);
+  //pic_set(2,2,0,0,0,0);
 
 } // initComponents
 
@@ -185,9 +179,6 @@ int main(void) {
 
   // Define task handles
   TaskHandle_t handleLed; // [jo:230929] no pico w o cyw43 precisa rodar sempre num único core
-
-	//MB+ init Console(debug)
-	printf("nao apague esta linha\n");
 
 	// init hardware
 	setupHardware();

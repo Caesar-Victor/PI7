@@ -47,14 +47,18 @@ linha=0
 
 def init_serial():
     global ser
-    ser = serial.Serial(
-        port='/dev/ttyACM1',
-        baudrate=115200,
-        parity=serial.PARITY_NONE,
-        stopbits=serial.STOPBITS_ONE,
-        bytesize=serial.EIGHTBITS,
-        timeout=0.5,
-    )
+    for i in range(2):
+        try:
+            ser = serial.Serial(
+                port=f'/dev/ttyACM{i}',
+                baudrate=115200,
+                parity=serial.PARITY_NONE,
+                stopbits=serial.STOPBITS_ONE,
+                bytesize=serial.EIGHTBITS,
+                timeout=0.5,
+            )
+        except serial.SerialException as e:
+            print(f"Erro: {e}")
             
 
 def send_modbus_message_pause():
@@ -122,7 +126,7 @@ def traj_envio(): #### CHECK ####
     ser.write(mensagem)
     print("Mensagem de trajetória:", mensagem)
     
-    time.sleep(5)
+    time.sleep(3)
 
 
 def parametros(): #### CHECK #### AINDA FALTA CHAMAR A FUNÇÃO
@@ -167,7 +171,7 @@ def main():
     traj_envio()
     print('Ready: ')
     while(1):
-        time.sleep(3)
+        time.sleep(1)
         e = input()
 
         protocolo_modbus(e)    

@@ -433,6 +433,8 @@ void processMessage() { // OK!
       processWriteFile();
       break;
     case PARAM:
+      enviaGanho(); 
+      break;
     } // switch on FunctionCode
   }
   _state = HUNTING_FOR_START_OF_MESSAGE;
