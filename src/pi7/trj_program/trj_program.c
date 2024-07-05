@@ -36,8 +36,19 @@ tpr_Data tpr_getLine(int line) {
 } // tpr_getLine
 
 void tpr_init() {
-  for (int i=0; i<MAX_PROGRAM_LINES;i++) {
-	  tpr_program[i].x = -160;
-	  tpr_program[i].y = 330;
-  }
+	
+    for (int i=0; i<MAX_PROGRAM_LINES;i++) {
+  	  tpr_program[i].x = 0;
+  	  tpr_program[i].y = 0;  
+    }
+
+	// tpr_program[0].x = 51;
+	// tpr_program[0].y = 305;
+
+//    tpr_program[MAX_PROGRAM_LINES-1].x=13;
+//    tpr_program[MAX_PROGRAM_LINES-1].y=298;
+
+//    tpr_program[MAX_PROGRAM_LINES].x=51;
+//    tpr_program[MAX_PROGRAM_LINES].x=305;
+
 } //tpr_init

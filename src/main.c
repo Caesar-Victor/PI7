@@ -71,7 +71,7 @@ void taskController(void *pvParameters) {
     // printf("1"); // [jo:231005] teste
 
     com_executeCommunication(); //internally, it calls Controller to process events
-    vTaskDelay(DELAY_20MS); // [jo:230929] TODO: por que não tem vTaskDelay() ? -> não, tem espera na fila
+    vTaskDelay(DELAY_200MS); // [jo:230929] TODO: por que não tem vTaskDelay() ? -> não, tem espera na fila
   } //task loop
 } // taskController
 
@@ -114,11 +114,11 @@ void taskCommPIC(void *pvParameters) {
     // UARTSend(0, (uint8_t*)"3", 1); // [jo:231004] teste
     // UARTSend(1, (uint8_t*)"3", 1); // [jo:231004] teste
 
-    if (xQueueReceive(qCommPIC1, &setpoints1, pdMS_TO_TICKS(210)) == pdPASS)
+    if (xQueueReceive(qCommPIC1, &setpoints1, pdMS_TO_TICKS(250)) == pdPASS)
       pic_sendToPIC(0, setpoints1); // portMAX_DELAY); // [jo:231004] 250 ms no meu teste
-    if (xQueueReceive(qCommPIC2, &setpoints2, pdMS_TO_TICKS(210)) == pdPASS)
+    if (xQueueReceive(qCommPIC2, &setpoints2, pdMS_TO_TICKS(250)) == pdPASS)
       pic_sendToPIC(1, setpoints2); // portMAX_DELAY); // [jo:231004] 250 ms no meu teste
-    //vTaskDelay(DELAY_200MS); // [jo:230928] eu coloquei, precisa?
+    vTaskDelay(DELAY_200MS); // [jo:230928] eu coloquei, precisa?
   } //task loop
 } // taskCommPIC
 
@@ -166,7 +166,7 @@ static void initComponents(void) {
   tst_init(); // trajectory state
   tpr_init(); // trajectory program
 
-  pic_set(1,0,0,1,0,0);
+  pic_set(2,2,0,0,0,0);
 
 } // initComponents
 

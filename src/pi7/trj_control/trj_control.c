@@ -10,6 +10,7 @@
 #include "FreeRTOS.h"
 #include "queue.h"
 #include <math.h>
+#include "task.h"
 
 #include <stdio.h>
 #include <stdlib.h> // para usar o comando malloc
@@ -83,14 +84,14 @@ void tcl_generateSetpoint() {
   toPic1.SOT = (char)':';
   toPic1.ADD = (char)'a';
   toPic1.COM = (char)'p';
-  toPic1.VAL = gamma; // angulo quadril
+  toPic1.VAL = gamma-90; // angulo quadril
   toPic1.EOT = (char)';';
   xQueueSend(qCommPIC1, &toPic1, portMAX_DELAY);
   
   toPic2.SOT = (char)':';
   toPic2.ADD = (char)'b';
   toPic2.COM = (char)'p';
-  toPic2.VAL = beta_scaled;//; // angulo joelho
+  toPic2.VAL = 180-beta_scaled;//; // angulo joelho
   toPic2.EOT = (char)';';
   xQueueSend(qCommPIC2, &toPic2, portMAX_DELAY);
 
@@ -117,7 +118,7 @@ void tcl_processCommand(tcl_Data data) {
 
 void tcl_init() {
    tcl_status = STATUS_NOT_RUNNING;
-  // tcl_Data start;
-  // start.command = CMD_START;
-  // xQueueSend(qControlCommands, &start, portMAX_DELAY);
+  //  tcl_Data start;
+  //  start.command = CMD_START;
+  //  xQueueSend(qControlCommands, &start, portMAX_DELAY);
 } // init
