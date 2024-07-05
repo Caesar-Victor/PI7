@@ -83,14 +83,14 @@ void tcl_generateSetpoint() {
   toPic1.SOT = (char)':';
   toPic1.ADD = (char)'a';
   toPic1.COM = (char)'p';
-  toPic1.VAL = gamma; // angulo quadril
+  toPic1.VAL = gamma-90; // angulo quadril
   toPic1.EOT = (char)';';
   xQueueSend(qCommPIC1, &toPic1, portMAX_DELAY);
   
   toPic2.SOT = (char)':';
   toPic2.ADD = (char)'b';
   toPic2.COM = (char)'p';
-  toPic2.VAL = beta_scaled;//; // angulo joelho
+  toPic2.VAL = 180-beta_scaled;//; // angulo joelho
   toPic2.EOT = (char)';';
   xQueueSend(qCommPIC2, &toPic2, portMAX_DELAY);
 
