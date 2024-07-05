@@ -4,5 +4,10 @@
 			"path": "."
 		}
   ],
-  "settings": {}
+"settings": {
+	"files.associations": {
+		"*.rmd": "markdown",
+		"trj_program.h": "c"
+	}
+}
 }
