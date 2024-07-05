@@ -337,6 +337,8 @@ void processWriteFile() {
     pontos[9 + 15*i] = '-';
   }
 
+  free(pontos);
+
   check = ctl_WriteProgram(pontos);
 
   // Monta o frame de resposta para enviar
@@ -359,7 +361,6 @@ void processWriteFile() {
   // Envia o buffer montado pela porta serial USB
   sendTxBufferToSerialUSB();
 
-  free(pontos);
 } // processWriteProgram
 
 /************************************************************************
@@ -405,6 +406,7 @@ void enviaGanho(){
   txBuffer[13] = 0; // null to end as string
 
   sendTxBufferToSerialUSB();
+  printf("Ganho Passado Para PIC\n");
 
 }
 

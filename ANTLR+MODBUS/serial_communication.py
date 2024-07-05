@@ -129,17 +129,9 @@ def traj_envio(): #### CHECK ####
     time.sleep(3)
 
 
-def parametros(): #### CHECK #### AINDA FALTA CHAMAR A FUNÇÃO
+def parametros(kpa, kia, kda, kpb, kib, kdb): #### CHECK #### AINDA FALTA CHAMAR A FUNÇÃO
     global ser
 
-    #definir de acordo com o que for necessário
-
-    kpa = 10
-    kia = 0
-    kda = 0
-    kpb = 10
-    kib = 0
-    kdb = 0
     # Send the data
     msg = b':010806'
     msg += ("{:03d}".format(kpa).encode())
@@ -165,14 +157,21 @@ def obtem_linha(): #### CHECK ####
 def main():
     global ser
     init_serial()
-    parametros()
+    kpa = int(input("Digite o valor de kpa: "))
+    kia = int(input("Digite o valor de kia: "))
+    kda = int(input("Digite o valor de kda: "))
+    kpb = int(input("Digite o valor de kpb: "))
+    kib = int(input("Digite o valor de kib: "))
+    kdb = int(input("Digite o valor de kdb: "))
+
+    parametros(kpa, kia, kda, kpb, kib, kdb)
+
     e = ""
-    a = ""
     traj_envio()
     print('Ready: ')
     while(1):
         time.sleep(1)
-        e = input()
+        e = input("Modo de execucao (S, s, p, i): ")
 
         protocolo_modbus(e)    
 
