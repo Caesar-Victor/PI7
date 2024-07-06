@@ -320,21 +320,23 @@ void processWriteRegister() {
 
 void processWriteFile() {
 	// TODO: implementar
+
   int n = decode(rxBuffer[5], rxBuffer[6]);
-  char* pontos = (char*) malloc(n*(6+2) +1);
+  char* pontos = (char*) malloc(n * (6+2) + 1);
   byte lrc;
   int check;
 
   for (int i = 0; i < n; i++) {
       // Copia as coordenadas X, Y, Z de cada ponto para pontos
-    pontos[0 + 15*i] = rxBuffer[7 + i*6];
-    pontos[1 + 15*i] = rxBuffer[8 + i*6];
-    pontos[2 + 15*i] = rxBuffer[9 + i*6];
-    pontos[3 + 15*i] = '-';
-    pontos[4 + 15*i] = rxBuffer[10 + i*6];
-    pontos[5 + 15*i] = rxBuffer[11 + i*6];
-    pontos[6 + 15*i] = rxBuffer[12 + i*6];
-    pontos[7 + 15*i] = '-';
+    pontos[0 + 8*i] = rxBuffer[7 + i*6];
+    pontos[1 + 8*i] = rxBuffer[8 + i*6];
+    pontos[2 + 8*i] = rxBuffer[9 + i*6];
+    pontos[3 + 8*i] = '-';
+    pontos[4 + 8*i] = rxBuffer[10 + i*6];
+    pontos[5 + 8*i] = rxBuffer[11 + i*6];
+    pontos[6 + 8*i] = rxBuffer[12 + i*6];
+    pontos[7 + 8*i] = '-';
+    
   }
 
   free(pontos);
