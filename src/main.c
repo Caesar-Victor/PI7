@@ -140,8 +140,6 @@ static void setupHardware(void) {
   // inicializa UARTs para comunicação com os PICs
   UARTInit(0, UART_BAUD); // UART0
   UARTInit(1, UART_BAUD); // UART1
-
-	printf("Hardware setup completed.\n");
 } // setupHardware
 
 static void initComponents(void) {

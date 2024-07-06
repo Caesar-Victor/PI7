@@ -71,7 +71,6 @@ int ctl_WriteRegister(int registerToWrite, int value)
 {
    // TODO: implementar
    tcl_Data command;
-   //printf("Register %d Value %d\n", registerToWrite, value);
    switch (registerToWrite)
    {
    case REG_START:
