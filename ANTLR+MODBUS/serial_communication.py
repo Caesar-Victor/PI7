@@ -129,7 +129,7 @@ def traj_envio(): #### CHECK ####
     time.sleep(3)
 
 
-def parametros(kpa, kia, kda, kpb, kib, kdb): #### CHECK #### AINDA FALTA CHAMAR A FUNÇÃO
+def parametros(kpa=1, kia=0, kda=0, kpb=1, kib=0, kdb=0): #### CHECK #### AINDA FALTA CHAMAR A FUNÇÃO
     global ser
 
     # Send the data
@@ -157,21 +157,22 @@ def obtem_linha(): #### CHECK ####
 def main():
     global ser
     init_serial()
-    kpa = int(input("Digite o valor de kpa: "))
-    kia = int(input("Digite o valor de kia: "))
-    kda = int(input("Digite o valor de kda: "))
-    kpb = int(input("Digite o valor de kpb: "))
-    kib = int(input("Digite o valor de kib: "))
-    kdb = int(input("Digite o valor de kdb: "))
+    # kpa = int(input("Digite o valor de kpa: "))
+    # kia = int(input("Digite o valor de kia: "))
+    # kda = int(input("Digite o valor de kda: "))
+    # kpb = int(input("Digite o valor de kpb: "))
+    # kib = int(input("Digite o valor de kib: "))
+    # kdb = int(input("Digite o valor de kdb: "))
 
-    parametros(kpa, kia, kda, kpb, kib, kdb)
+    # parametros(kpa, kia, kda, kpb, kib, kdb)
+    parametros()
 
     e = ""
     traj_envio()
     print('Ready: ')
     while(1):
         time.sleep(1)
-        e = input("Modo de execucao (S, s, p, i): ")
+        e = input("Modo de execucao (S, s, p, i)(e)xit: ")
 
         protocolo_modbus(e)    
 
