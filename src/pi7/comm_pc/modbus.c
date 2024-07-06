@@ -328,17 +328,6 @@ void processWriteFile() {
   int check;
 
   for (int i = 0; i < n; i++) {
-<<<<<<< HEAD
-      // Copia as coordenadas X, Y de cada ponto para pontos
-    pontos[0 + 15*i] = rxBuffer[7 + i*6];
-    pontos[1 + 15*i] = rxBuffer[8 + i*6];
-    pontos[2 + 15*i] = rxBuffer[9 + i*6];
-    pontos[4 + 15*i] = '-';
-    pontos[5 + 15*i] = rxBuffer[10 + i*6];
-    pontos[6 + 15*i] = rxBuffer[11 + i*6];
-    pontos[7 + 15*i] = rxBuffer[12 + i*6];
-    pontos[9 + 15*i] = '-';
-=======
       // Copia as coordenadas X, Y, Z de cada ponto para pontos
     pontos[0 + 8*i] = rxBuffer[7 + i*6];
     pontos[1 + 8*i] = rxBuffer[8 + i*6];
@@ -348,7 +337,6 @@ void processWriteFile() {
     pontos[5 + 8*i] = rxBuffer[11 + i*6];
     pontos[6 + 8*i] = rxBuffer[12 + i*6];
     pontos[7 + 8*i] = '-';
->>>>>>> 3b37ddacb003e22c60cd9d7e3dc2a4996d795ae1
   }
 
 
