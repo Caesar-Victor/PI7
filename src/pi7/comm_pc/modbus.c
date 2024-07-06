@@ -55,7 +55,7 @@
 #define READ_REGISTER 0x03
 #define WRITE_REGISTER 0x06
 #define WRITE_FILE 0x15
-#define PARAM 0X08
+#define PARAM 0X08 // 
 
 // Defines de uso geral
 #define MB_NO_CHAR 0xff
@@ -82,6 +82,7 @@ int idxTxBuffer;
  Retorno:
     nenhum
 *************************************************************************/
+
 void com_init() {
   _state = HUNTING_FOR_START_OF_MESSAGE;
   // _mode = DEVELOPMENT_MODE; // [jo:231004] testando REAL_MODE
@@ -326,6 +327,17 @@ void processWriteFile() {
   int check;
 
   for (int i = 0; i < n; i++) {
+<<<<<<< HEAD
+      // Copia as coordenadas X, Y de cada ponto para pontos
+    pontos[0 + 15*i] = rxBuffer[7 + i*6];
+    pontos[1 + 15*i] = rxBuffer[8 + i*6];
+    pontos[2 + 15*i] = rxBuffer[9 + i*6];
+    pontos[4 + 15*i] = '-';
+    pontos[5 + 15*i] = rxBuffer[10 + i*6];
+    pontos[6 + 15*i] = rxBuffer[11 + i*6];
+    pontos[7 + 15*i] = rxBuffer[12 + i*6];
+    pontos[9 + 15*i] = '-';
+=======
       // Copia as coordenadas X, Y, Z de cada ponto para pontos
     pontos[0 + 8*i] = rxBuffer[7 + i*6];
     pontos[1 + 8*i] = rxBuffer[8 + i*6];
@@ -335,6 +347,7 @@ void processWriteFile() {
     pontos[5 + 8*i] = rxBuffer[11 + i*6];
     pontos[6 + 8*i] = rxBuffer[12 + i*6];
     pontos[7 + 8*i] = '-';
+>>>>>>> 3b37ddacb003e22c60cd9d7e3dc2a4996d795ae1
   }
 
 
