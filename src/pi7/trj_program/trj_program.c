@@ -18,14 +18,18 @@ tpr_Data tpr_program[MAX_PROGRAM_LINES];
 
 int tpr_storeProgram(char* texto) {
 
-	int i;
+	int i=1, val[2];
 	char* separa = strtok(texto, "-");
 
 	while (separa != NULL) {
+		val[(i-1)%2]=(int)atof(separa);
 		if (i%2==0) {
-		tpr_program[i/2].x = (int)separa[0];
-		tpr_program[i++/2].y = (int)separa[1];	
+		tpr_program[i/2].x = val[0];
+		tpr_program[i++/2].y = val[1];	
+		// printf("\n%d",val[0]);
+		// printf("\n%d\n",val[1]);
 		}
+		i++;
 		separa = strtok(NULL, "-");
 	}
 	return 1;

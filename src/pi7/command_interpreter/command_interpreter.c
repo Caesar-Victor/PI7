@@ -47,9 +47,9 @@ int ctl_ReadRegister(int registerToRead)
    switch (registerToRead)
    {
    case REG_X:
-      return (int)tst_getX();
+      return tst_getX();
    case REG_Y:
-      return (int)tst_getY();
+      return tst_getY();
    case REG_LINE:
       return tst_getCurrentLine();
    } // switch

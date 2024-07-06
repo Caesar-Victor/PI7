@@ -336,12 +336,11 @@ void processWriteFile() {
     pontos[5 + 8*i] = rxBuffer[11 + i*6];
     pontos[6 + 8*i] = rxBuffer[12 + i*6];
     pontos[7 + 8*i] = '-';
-    
   }
 
-  free(pontos);
 
   check = ctl_WriteProgram(pontos);
+  free(pontos);
 
   // Monta o frame de resposta para enviar
   txBuffer[0] = ':';
@@ -362,7 +361,6 @@ void processWriteFile() {
 
   // Envia o buffer montado pela porta serial USB
   sendTxBufferToSerialUSB();
-
 } // processWriteProgram
 
 /************************************************************************
