@@ -5,4 +5,3 @@ Unmodified, this project will spawn a single task to rapidly blink the LED on an
 
 # Usado como base para o programa de geração de trajetória do PI-7
 Autor: Jun Okamoto Jr., baseado no original do Prof. Marcos Barretto
-# PI7

@@ -321,12 +321,14 @@ void processWriteRegister() {
 
 void processWriteFile() {
 	// TODO: implementar
+
   int n = decode(rxBuffer[5], rxBuffer[6]);
-  char* pontos = (char*) malloc(n*(6+2) +1);
+  char* pontos = (char*) malloc(n * (6+2) + 1);
   byte lrc;
-  int check = false;
+  int check;
 
   for (int i = 0; i < n; i++) {
+<<<<<<< HEAD
       // Copia as coordenadas X, Y de cada ponto para pontos
     pontos[0 + 15*i] = rxBuffer[7 + i*6];
     pontos[1 + 15*i] = rxBuffer[8 + i*6];
@@ -336,9 +338,22 @@ void processWriteFile() {
     pontos[6 + 15*i] = rxBuffer[11 + i*6];
     pontos[7 + 15*i] = rxBuffer[12 + i*6];
     pontos[9 + 15*i] = '-';
+=======
+      // Copia as coordenadas X, Y, Z de cada ponto para pontos
+    pontos[0 + 8*i] = rxBuffer[7 + i*6];
+    pontos[1 + 8*i] = rxBuffer[8 + i*6];
+    pontos[2 + 8*i] = rxBuffer[9 + i*6];
+    pontos[3 + 8*i] = '-';
+    pontos[4 + 8*i] = rxBuffer[10 + i*6];
+    pontos[5 + 8*i] = rxBuffer[11 + i*6];
+    pontos[6 + 8*i] = rxBuffer[12 + i*6];
+    pontos[7 + 8*i] = '-';
+>>>>>>> 3b37ddacb003e22c60cd9d7e3dc2a4996d795ae1
   }
 
+
   check = ctl_WriteProgram(pontos);
+  free(pontos);
 
   // Monta o frame de resposta para enviar
   txBuffer[0] = ':';
@@ -359,8 +374,6 @@ void processWriteFile() {
 
   // Envia o buffer montado pela porta serial USB
   sendTxBufferToSerialUSB();
-
-  free(pontos);
 } // processWriteProgram
 
 /************************************************************************
@@ -406,6 +419,7 @@ void enviaGanho(){
   txBuffer[13] = 0; // null to end as string
 
   sendTxBufferToSerialUSB();
+  printf("Ganho Passado Para PIC\n");
 
 }
 
@@ -434,6 +448,8 @@ void processMessage() { // OK!
       processWriteFile();
       break;
     case PARAM:
+      enviaGanho(); 
+      break;
     } // switch on FunctionCode
   }
   _state = HUNTING_FOR_START_OF_MESSAGE;

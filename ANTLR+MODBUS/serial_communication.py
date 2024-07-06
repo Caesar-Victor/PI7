@@ -29,7 +29,7 @@ class WalkListener(GCodeListener):
 
 def varreGCode():
     # Processamento do arquivo GCode
-    with open("ANTLR+MODBUS/GCode-example") as file:
+    with open("ANTLR+MODBUS/GCode") as file:
         data = f'{file.read()}'
     lexer = GCodeLexer(InputStream(data))
     stream = CommonTokenStream(lexer)
@@ -42,24 +42,23 @@ def varreGCode():
 
 
 global ser 
-
-
-global comandoAtivo
-comandoAtivo = 0
-
 global linha
 linha=0
 
 def init_serial():
     global ser
-    ser = serial.Serial(
-        port='/dev/ttyACM0',
-        baudrate=115200,
-        parity=serial.PARITY_NONE,
-        stopbits=serial.STOPBITS_ONE,
-        bytesize=serial.EIGHTBITS,
-        timeout=0.5,
-    )
+    for i in range(2):
+        try:
+            ser = serial.Serial(
+                port=f'/dev/ttyACM{i}',
+                baudrate=115200,
+                parity=serial.PARITY_NONE,
+                stopbits=serial.STOPBITS_ONE,
+                bytesize=serial.EIGHTBITS,
+                timeout=0.5,
+            )
+        except serial.SerialException as e:
+            print(f"Erro: {e}")
             
 
 def send_modbus_message_pause():
@@ -68,6 +67,7 @@ def send_modbus_message_pause():
     print(f"Enviado comando PAUSE: {msg}")
 
 def send_modbus_message_start():
+    global ativo
     msg = b':010602000116\r\n\r'
     ser.write(msg)
     print(f"Enviado comando start: {msg}")
@@ -75,30 +75,26 @@ def send_modbus_message_start():
 def send_modbus_message_stop():
     msg = b':010602020114\r\n\r'
     ser.write(msg)
-    print(f"Enviado comando start: {msg}")
+    print(f"Enviado comando stop: {msg}")
 
 def send_modbus_init_point():
-    ponto_inicial = b':011501-160420'
-    ponto_inicial += calculaLRC(ponto_inicial)
+    ponto_inicial = b':011501000420'
+    ponto_inicial += calculaLRC(ponto_inicial).encode()
     ponto_inicial += b'\x0D\x0A'
     ser.write(ponto_inicial)
-    print("Mensagem de ponto inicial enviada: ", ponto_inicial)
+    print(f"Mensagem de ponto inicial enviada: {ponto_inicial}" )
 
-def ativa_resposta(resposta):
+def protocolo_modbus(x):
     global linha
-    if resposta == b'S': # Se receber 'S', envia o comando de start
+    if x == "S": # Se receber 'S', envia o comando de start
         send_modbus_message_start()
-    elif resposta == b's':
+    elif x == "s":
         send_modbus_message_stop()
-    elif resposta == b'p':
+    elif x == 'p':
         send_modbus_message_pause()
-    elif resposta == b'i':
+    elif x == 'i':
         print("Enviado posicao inicial")
         send_modbus_init_point()
-
-    elif resposta[0:7] == b':010301':
-        linha = int(resposta[7:9].decode(), 16)
-        print(f"Linha atual: {linha + 1}")
     else:
         pass
 
@@ -112,19 +108,6 @@ def calculaLRC(data): #### CHECK ####
     lrc_string = hex(lrc)[2:]
     return lrc_string
 
-def comando(comando): #### CHECK ####
-    global ser
-    global comandoAtivo
-
-    comandoAtivo = True
-    ser.write(comando)
-    print("Enviado: ", comando)
-    
-    resposta = ser.read(16)
-    comandoAtivo = False
-    ativa_resposta(resposta)
-    if resposta:
-        print("Resposta:", resposta)
 
 # Função para enviar mensagem Modbus que
 
@@ -143,22 +126,12 @@ def traj_envio(): #### CHECK ####
     ser.write(mensagem)
     print("Mensagem de trajetória:", mensagem)
     
-    time.sleep(5)
-    resposta = ser.read(100)
-    ativa_resposta(resposta)
-    print("Resposta recebida:", resposta)
+    time.sleep(3)
 
-def parametros(): #### CHECK #### AINDA FALTA CHAMAR A FUNÇÃO
+
+def parametros(kpa=1, kia=0, kda=0, kpb=1, kib=0, kdb=0): #### CHECK #### AINDA FALTA CHAMAR A FUNÇÃO
     global ser
 
-    #definir de acordo com o que for necessário
-
-    kpa = 0
-    kia = 0
-    kda = 0
-    kpb = 0
-    kib = 0
-    kdb = 0
     # Send the data
     msg = b':010806'
     msg += ("{:03d}".format(kpa).encode())
@@ -175,34 +148,33 @@ def parametros(): #### CHECK #### AINDA FALTA CHAMAR A FUNÇÃO
 # Basicamente, a função obtem_linha() pode ser chamada para obter a linha atual
 def obtem_linha(): #### CHECK ####
     global linha
-    global comandoAtivo
     global ser
 
     # comando para pegar linha
     ser.write(b':0103000379' + b'\x0D\x0A' )
     
-    # se não tiver um comando ativo, le a resposta
-    if(not comandoAtivo): 
-        resposta = ser.read(14)
-        ativa_resposta(resposta)
-        print("Linha:", linha)
 
 def main():
     global ser
     init_serial()
+    # kpa = int(input("Digite o valor de kpa: "))
+    # kia = int(input("Digite o valor de kia: "))
+    # kda = int(input("Digite o valor de kda: "))
+    # kpb = int(input("Digite o valor de kpb: "))
+    # kib = int(input("Digite o valor de kib: "))
+    # kdb = int(input("Digite o valor de kdb: "))
+
+    # parametros(kpa, kia, kda, kpb, kib, kdb)
     parametros()
+
     e = ""
-    a = ""
     traj_envio()
     print('Ready: ')
     while(1):
-        time.sleep(3)
-        e = input()
+        time.sleep(1)
+        e = input("Modo de execucao (S, s, p, i)(e)xit: ")
 
-        ativa_resposta(e)    
-        
-        a = ser.read(25)
-        print("Read: ", a)
+        protocolo_modbus(e)    
 
         if e == 'e':
             break

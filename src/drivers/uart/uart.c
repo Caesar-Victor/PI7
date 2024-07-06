@@ -400,7 +400,7 @@ void UARTSend( uint8_t portNum, uint8_t *BufferPtr ) {
       //UART0TxEmpty = 0;	/* not empty in the THR until it shifts out */ // [jo:231004] tem que ser fora do while
       //BufferPtr++;
       //Length--;
-      //cyw43_delay_ms(5);
+      cyw43_delay_ms(5);
       
     }
     // UART0TxEmpty = 0;	/* not empty in the THR until it shifts out */ // [jo:231004] movido para cá
@@ -413,7 +413,7 @@ void UARTSend( uint8_t portNum, uint8_t *BufferPtr ) {
       //UART1TxEmpty = 0;	/* not empty in the THR until it shifts out */ // [jo:231004] tem que ser fora do while
       //BufferPtr++;
       //Length--;
-      //cyw43_delay_ms(5);
+      cyw43_delay_ms(5);
       
     }
     // UART1TxEmpty = 0;	/* not empty in the THR until it shifts out */ // [jo:231004] movido para cá
