@@ -239,7 +239,6 @@ int checkLRC() {
   retval = false;
   receivedLRC = decode(rxBuffer[idxRxBuffer-3], rxBuffer[idxRxBuffer-2]);
   calculatedLRC = calculateLRC(rxBuffer, 1, idxRxBuffer - 4); // modified (-3)
-  printf("LCR rx=%x calc=%x \n", receivedLRC, calculatedLRC);
   if ( receivedLRC == calculatedLRC) {
     retval = true;
   }
@@ -406,8 +405,6 @@ void enviaGanho(){
   txBuffer[13] = 0; // null to end as string
 
   sendTxBufferToSerialUSB();
-  printf("Ganho Passado Para PIC\n");
-
 }
 
 /************************************************************************
@@ -463,7 +460,6 @@ void receiveMessage() {
   //ch = getCharFromSerial(); // [jo:231005] original
    if ((ch = getchar_timeout_us(0)) /* != PICO_ERROR_TIMEOUT && ch */ != MB_NO_CHAR) { // [jo:231005] modbus só pela serial USB
   // if (ch != NO_CHAR) { // [jo:231005] original
-    printf(" [%x] ", ch); // [jo:231004] teste
     if (_state == HUNTING_FOR_START_OF_MESSAGE) {
       if (ch == ':') {
         idxRxBuffer = 0;

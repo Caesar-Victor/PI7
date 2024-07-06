@@ -62,18 +62,23 @@ def init_serial():
             
 
 def send_modbus_message_pause():
-    msg = b':010602010115\r\n\r'
+    msg = b':0106010177\r\n\r'
     ser.write(msg)
     print(f"Enviado comando PAUSE: {msg}")
 
 def send_modbus_message_start():
     global ativo
-    msg = b':010602000116\r\n\r'
+    msg = b':0106000178\r\n\r'
     ser.write(msg)
     print(f"Enviado comando start: {msg}")
 
+def send_modbus_message_continue():
+    msg = b':0106030175\r\n\r'
+    ser.write(msg)
+    print(f"Enviado comando Continue: {msg}")
+
 def send_modbus_message_stop():
-    msg = b':010602020114\r\n\r'
+    msg = b':0106020176\r\n\r'
     ser.write(msg)
     print(f"Enviado comando stop: {msg}")
 
@@ -92,6 +97,8 @@ def protocolo_modbus(x):
         send_modbus_message_stop()
     elif x == 'p':
         send_modbus_message_pause()
+    elif x == 'c':
+        send_modbus_message_continue()
     elif x == 'i':
         print("Enviado posicao inicial")
         send_modbus_init_point()
@@ -172,7 +179,7 @@ def main():
     print('Ready: ')
     while(1):
         time.sleep(1)
-        e = input("Modo de execucao (S, s, p, i)(e)xit: ")
+        e = input("Modo de execucao (S, s, p, c, i)(e)xit: ")
 
         protocolo_modbus(e)    
 
