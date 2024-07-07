@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.12)
 
 set(PICO_BOARD "pico_w")
-set(PICO_TOOLCHAIN_PATH "/usr/arm-none-eabi") 
+set(PICO_TOOLCHAIN_PATH "/home/guicbelon/Documentos/PI7/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin") 
 
 # Name project
 SET(ProjectName picow-pi7)
