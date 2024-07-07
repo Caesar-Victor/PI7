@@ -153,6 +153,7 @@ def parametros(kpa=1, kia=0, kda=0, kpb=1, kib=0, kdb=0): #### CHECK #### AINDA 
     print(msg)
 
 # Basicamente, a função obtem_linha() pode ser chamada para obter a linha atual
+
 def obtem_linha(): #### CHECK ####
     global linha
     global ser

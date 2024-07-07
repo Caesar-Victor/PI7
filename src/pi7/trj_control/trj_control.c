@@ -52,8 +52,10 @@ void tcl_generateSetpoint() {
   line = tpr_getLine(currLine);
   printf("Setpoint: %d %d\n", line.x, line.y);
 
+  int x= line.x-160;
+  int y= line.y;
 
-  int L3 = round(sqrt(line.x * line.x + line.y * line.y));
+  int L3 = round(sqrt(x * x + y * y));
   int L3s = SCALE * L3;
 
   // Calcular cos(beta) escalado
@@ -69,11 +71,11 @@ void tcl_generateSetpoint() {
   int gamma = 0;
   int thetas = 0;
 
-  if (line.x == 0) {
+  if (x == 0) {
     gamma = 90;
   } else {
-      thetas = SCALE*atan((float)line.y / line.x);
-    if (line.x < 0) {
+      thetas = SCALE*atan((float) y / x);
+    if (x < 0) {
       gamma = 180;
     }
   }
