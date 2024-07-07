@@ -14,7 +14,21 @@ class WalkListener(GCodeListener):
             text = ctx.coordy().coord().getText()
             self.y_point.append(text)
             
+    def varreGCode():
+        # Processamento do arquivo GCode
+        with open("ANTLR+MODBUS/GCode-example") as file:
+            data = f'{file.read()}'
+        lexer = GCodeLexer(InputStream(data))
+        stream = CommonTokenStream(lexer)
+        parser = GCodeParser(stream)
+        tree = parser.gcode()
+        listener = WalkListener()
+        walker = ParseTreeWalker()
+        walker.walk(listener, tree)
+        return (listener.linha_ponto, listener.traj)
 
+            
+"""
 def varreGCode(file_name:str="G_codes/GCode1"):
     with open(file_name) as file:
         data = f'{file.read()}'
@@ -33,3 +47,4 @@ def varreGCode(file_name:str="G_codes/GCode1"):
     for i in range(len(x_pos)):
         g_list.append((int(x_pos[i]),int(y_pos[i])))    
     return g_list
+"""
