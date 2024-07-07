@@ -25,7 +25,7 @@ int tpr_storeProgram(char* texto) {
 		val[(i-1)%2]=(int)atof(separa);
 		if (i%2==0) {
 		tpr_program[i/2].x = val[0];
-		tpr_program[i++/2].y = val[1];	
+		tpr_program[i/2].y = val[1];	
 		// printf("\n%d",val[0]);
 		// printf("\n%d\n",val[1]);
 		}
@@ -43,7 +43,7 @@ void tpr_init() {
 	
     for (int i=0; i<MAX_PROGRAM_LINES;i++) {
   	  tpr_program[i].x = 0;
-  	  tpr_program[i].y = 0;  
+  	  tpr_program[i].y = 420;  
     }
 
 	// tpr_program[0].x = 51;

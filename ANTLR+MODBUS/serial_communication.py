@@ -29,7 +29,7 @@ class WalkListener(GCodeListener):
 
 def varreGCode():
     # Processamento do arquivo GCode
-    with open("ANTLR+MODBUS/GCode") as file:
+    with open("ANTLR+MODBUS/GCode-example") as file:
         data = f'{file.read()}'
     lexer = GCodeLexer(InputStream(data))
     stream = CommonTokenStream(lexer)

@@ -30,7 +30,7 @@ extern xQueueHandle qControlCommands;
 #define PI 31415
 #define L1 210
 #define L2 247
-#define SCALE 120
+#define SCALE 100
 
 //manda para o PIC um setpoint
 void tcl_generateSetpoint() {
@@ -50,10 +50,11 @@ void tcl_generateSetpoint() {
   currLine = tst_getCurrentLine();
   printf("CurrLine %d\n", currLine);
   line = tpr_getLine(currLine);
-  printf("Setpoint: %d %d\n", line.x, line.y);
 
   int x= line.x-160;
   int y= line.y;
+
+  printf("Setpoint: %d %d\n", x, y);
 
   int L3 = round(sqrt(x * x + y * y));
   int L3s = SCALE * L3;
@@ -86,7 +87,7 @@ void tcl_generateSetpoint() {
   toPic1.SOT = (char)':';
   toPic1.ADD = (char)'a';
   toPic1.COM = (char)'p';
-  toPic1.VAL = gamma-90; // angulo quadril
+  toPic1.VAL = 90-gamma; // angulo quadril
   toPic1.EOT = (char)';';
   xQueueSend(qCommPIC1, &toPic1, portMAX_DELAY);
   
