@@ -44,8 +44,10 @@ void tcl_generateSetpoint() {
   pic_Data toPic2;
 
   // função só é executada se o status for STATUS_RUNNING
-  if (tcl_status == STATUS_RUNNING) {
-    if (currLine == MAX_PROGRAM_LINES){
+  if (tcl_status != STATUS_RUNNING) {
+    return;
+  }else {
+    if (currLine >= MAX_PROGRAM_LINES-1){
       tcl_status=STATUS_NOT_RUNNING;
       return;
     }
