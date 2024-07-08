@@ -165,15 +165,15 @@ def obtem_linha(): #### CHECK ####
 def main():
     global ser
     init_serial()
-    # kpa = int(input("Digite o valor de kpa: "))
-    # kia = int(input("Digite o valor de kia: "))
+    kpa = int(input("Digite o valor de kpa: "))
+    kia = int(input("Digite o valor de kia: "))
     # kda = int(input("Digite o valor de kda: "))
-    # kpb = int(input("Digite o valor de kpb: "))
-    # kib = int(input("Digite o valor de kib: "))
+    kpb = int(input("Digite o valor de kpb: "))
+    kib = int(input("Digite o valor de kib: "))
     # kdb = int(input("Digite o valor de kdb: "))
 
-    # parametros(kpa, kia, kda, kpb, kib, kdb)
-    parametros()
+    parametros(kpa, kia, 0, kpb, kib, 0)
+    #parametros()
 
     e = ""
     traj_envio()

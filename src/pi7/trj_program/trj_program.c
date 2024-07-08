@@ -4,7 +4,6 @@
  */
 
 // max NC program size
-#define MAX_PROGRAM_LINES 50
 
 #include "trj_program.h"
 #include "../command_interpreter/command_interpreter.h"

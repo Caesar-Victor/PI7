@@ -17,6 +17,7 @@
 
 // Header files for PI7
 #include "trj_control.h"
+#include "trj_program.h"
 #include "../trj_program/trj_program.h"
 #include "../trj_state/trj_state.h"
 #include "../comm_pic/comm_pic.h"
@@ -43,8 +44,11 @@ void tcl_generateSetpoint() {
   pic_Data toPic2;
 
   // função só é executada se o status for STATUS_RUNNING
-  if (tcl_status != STATUS_RUNNING) {
-    return;
+  if (tcl_status == STATUS_RUNNING) {
+    if (currLine == MAX_PROGRAM_LINES){
+      tcl_status=STATUS_NOT_RUNNING;
+      return;
+    }
   }
 
   currLine = tst_getCurrentLine();
