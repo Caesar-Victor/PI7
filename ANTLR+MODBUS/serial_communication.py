@@ -89,7 +89,8 @@ def send_modbus_init_point():
     ser.write(ponto_inicial)
     print(f"Mensagem de ponto inicial enviada: {ponto_inicial}" )
 
-def protocolo_modbus(x):
+
+def protocolo_modbus(x, aa=0, ab=0):
     global linha
     if x == "S": # Se receber 'S', envia o comando de start
         send_modbus_message_start()
@@ -102,6 +103,12 @@ def protocolo_modbus(x):
     elif x == 'i':
         print("Enviado posicao inicial")
         send_modbus_init_point()
+    elif x == 'g':
+        kpa = int(input("Digite o valor de kpa: "))
+        kia = int(input("Digite o valor de kia: "))
+        kpb = int(input("Digite o valor de kpb: "))
+        kib = int(input("Digite o valor de kib: "))
+        set_ganho(kpa, kia, 0, kpb, kib, 0)
     else:
         pass
 
@@ -136,7 +143,7 @@ def traj_envio(): #### CHECK ####
     time.sleep(3)
 
 
-def parametros(kpa=1, kia=0, kda=0, kpb=1, kib=0, kdb=0): #### CHECK #### AINDA FALTA CHAMAR A FUNÇÃO
+def set_ganho(kpa=25, kia=3, kda=0, kpb=5, kib=1, kdb=0): #### CHECK #### AINDA FALTA CHAMAR A FUNÇÃO
     global ser
 
     # Send the data
@@ -165,28 +172,17 @@ def obtem_linha(): #### CHECK ####
 def main():
     global ser
     init_serial()
-    kpa = 5# int(input("Digite o valor de kpa: "))
-    kia = 0#int(input("Digite o valor de kia: "))
-    kda = 0#int(input("Digite o valor de kda: "))
-    kpb = 5#int(input("Digite o valor de kpb: "))
-    kib = 0#int(input("Digite o valor de kib: "))
-    kdb = 0#int(input("Digite o valor de kdb: "))
-
-    parametros(kpa, kia, kda, kpb, kib, kdb)
-    #parametros()
-
+    set_ganho()
     e = ""
     traj_envio()
     print('Ready: ')
     while(1):
         time.sleep(1)
-        e = input("Modo de execucao (S, s, p, c, i)(e)xit: ")
+        e = input("Modo de execucao (S, s, p, c, i, g)(e)xit: ")
 
         protocolo_modbus(e)    
 
         if e == 'e':
             break
-
-        
                 
 main()
