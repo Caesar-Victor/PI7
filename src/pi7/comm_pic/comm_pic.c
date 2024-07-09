@@ -22,6 +22,8 @@
 
 // Header files for PI7
 #include "comm_pic.h"
+#include "trj_control.h"
+
 
 void pic_init(void){  
 } // pic_init
@@ -30,6 +32,11 @@ void pic_set(int kpa, int kpb, int kia, int kib, int kda, int kdb){
 
   uint8_t out[32];
 
+  sprintf((char*)out, "%c%c%c%d%c\n", ':', 'a', 'h', 0, ';');
+  UARTSend(0, out);  // envia para UART 0 
+  sprintf((char*)out, "%c%c%c%d%c\n", ':', 'b', 'h', 0, ';');
+  UARTSend(1, out);  // envia para UART 0 
+  
   sprintf((char*)out, "%c%c%c%d%c\n", ':', 'a', 'g', kpa, ';');
   UARTSend(0, out);  // envia para UART 0 
   sprintf((char*)out, "%c%c%c%d%c\n", ':', 'b', 'g', kpb, ';');

@@ -1,6 +1,6 @@
 #ifndef __trj_program_h
 #define __trj_program_h
-#define MAX_PROGRAM_LINES 25
+#define MAX_PROGRAM_LINES 28
 
 
 typedef struct {

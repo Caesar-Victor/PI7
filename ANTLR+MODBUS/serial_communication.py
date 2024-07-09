@@ -93,11 +93,11 @@ def protocolo_modbus(x):
     global linha
     if x == "S": # Se receber 'S', envia o comando de start
         send_modbus_message_start()
-    elif x == "s":
+    elif x == "c":
         send_modbus_message_stop()
     elif x == 'p':
         send_modbus_message_pause()
-    elif x == 'c':
+    elif x == 's':
         send_modbus_message_continue()
     elif x == 'i':
         print("Enviado posicao inicial")
@@ -165,14 +165,14 @@ def obtem_linha(): #### CHECK ####
 def main():
     global ser
     init_serial()
-    kpa = int(input("Digite o valor de kpa: "))
-    kia = int(input("Digite o valor de kia: "))
-    # kda = int(input("Digite o valor de kda: "))
-    kpb = int(input("Digite o valor de kpb: "))
-    kib = int(input("Digite o valor de kib: "))
-    # kdb = int(input("Digite o valor de kdb: "))
+    kpa = 5# int(input("Digite o valor de kpa: "))
+    kia = 0#int(input("Digite o valor de kia: "))
+    kda = 0#int(input("Digite o valor de kda: "))
+    kpb = 5#int(input("Digite o valor de kpb: "))
+    kib = 0#int(input("Digite o valor de kib: "))
+    kdb = 0#int(input("Digite o valor de kdb: "))
 
-    parametros(kpa, kia, 0, kpb, kib, 0)
+    parametros(kpa, kia, kda, kpb, kib, kdb)
     #parametros()
 
     e = ""
