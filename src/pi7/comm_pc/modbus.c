@@ -319,15 +319,12 @@ void processWriteRegister() {
 } // processWriteRegister
 
 void processWriteFile() {
-	// TODO: implementar
-
   int n = decode(rxBuffer[5], rxBuffer[6]);
   char* pontos = (char*) malloc(n * (6+2) + 1);
   byte lrc;
   int check;
 
   for (int i = 0; i < n; i++) {
-      // Copia as coordenadas X, Y, Z de cada ponto para pontos
     pontos[0 + 8*i] = rxBuffer[7 + i*6];
     pontos[1 + 8*i] = rxBuffer[8 + i*6];
     pontos[2 + 8*i] = rxBuffer[9 + i*6];
@@ -341,8 +338,6 @@ void processWriteFile() {
 
   check = ctl_WriteProgram(pontos);
   free(pontos);
-
-  // Monta o frame de resposta para enviar
   txBuffer[0] = ':';
   txBuffer[1] = encodeHigh(MY_ADDRESS);
   txBuffer[2] = encodeLow(MY_ADDRESS);
