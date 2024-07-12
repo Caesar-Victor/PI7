@@ -16,7 +16,6 @@
 tpr_Data tpr_program[MAX_PROGRAM_LINES];
 
 int tpr_storeProgram(char* texto) {
-
 	int i=1, val[2];
 	char* separa = strtok(texto, "-");
 
@@ -25,8 +24,6 @@ int tpr_storeProgram(char* texto) {
 		if (i%2==0) {
 		tpr_program[i/2].x = val[0];
 		tpr_program[i/2].y = val[1];	
-		// printf("\n%d",val[0]);
-		// printf("\n%d\n",val[1]);
 		}
 		i++;
 		separa = strtok(NULL, "-");

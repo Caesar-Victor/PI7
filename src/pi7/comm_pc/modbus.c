@@ -219,7 +219,7 @@ byte calculateLRC(byte* frame, int start, int end) {
   ff = (byte)0xff;
   um = (byte)0x01;
 
-  for (i= start; i <= end; i++) {
+  for (i= start; i <= end; i++) { // mudado de < para <=
     accum += frame[i];
   }
   accum = (byte) (ff - accum);
@@ -260,28 +260,24 @@ void processReadRegister() {
   byte lrc;
 
   registerToRead  = decode(rxBuffer[7], rxBuffer[8]);
-  // Aciona controller para obter valor. Note que a informacao
-  // ate´ poderia ser acessada diretamente. Mas a arquitetura MVC
-  // exige que todas as interacoes se deem atraves do controller.
   registerValue = ctl_ReadRegister(registerToRead);
-  // Monta frame de resposta e a envia
   txBuffer[0] = ':';
   txBuffer[1] = encodeHigh(MY_ADDRESS);
   txBuffer[2] = encodeLow(MY_ADDRESS);
   txBuffer[3] = encodeHigh(READ_REGISTER);
   txBuffer[4] = encodeLow(READ_REGISTER);
-  txBuffer[5] = encodeHigh(1); // byte count field  (high part)
-  txBuffer[6] = encodeLow(1);  // byte count field (low part)
+  txBuffer[5] = encodeHigh(1); 
+  txBuffer[6] = encodeLow(1);  
   txBuffer[7] = encodeHigh(registerValue);
   txBuffer[8] = encodeLow(registerValue);
-  lrc = calculateLRC(txBuffer, 1, 8); // modified
+  lrc = calculateLRC(txBuffer, 1, 8); 
   txBuffer[9] = encodeHigh(lrc);
   txBuffer[10] = encodeLow(lrc);
   txBuffer[11] = 0x0d;
   txBuffer[12] = 0x0a;
-  txBuffer[13] = 0; // null to end as string
-  //putCharToSerial(); // [jo:231005] original
-  sendTxBufferToSerialUSB(); // [jo:231005] atualizado para 2024
+  txBuffer[13] = 0; 
+
+  sendTxBufferToSerialUSB(); 
 } // processReadRegister
 
 void processWriteRegister() {
@@ -292,11 +288,8 @@ void processWriteRegister() {
   registerToWrite = decode(rxBuffer[5], rxBuffer[6]);
   registerValue = decode(rxBuffer[7], rxBuffer[8]);
 
-  // Aciona controller porque a arquitetura MVC
-  // exige que todas as interacoes se deem atraves do controller.
   registerValue = ctl_WriteRegister(registerToWrite, registerValue);
 
-  // Monta frame de resposta e a envia
   txBuffer[0] = ':';
   txBuffer[1] = encodeHigh(MY_ADDRESS);
   txBuffer[2] = encodeLow(MY_ADDRESS);
@@ -313,7 +306,8 @@ void processWriteRegister() {
   txBuffer[12] = encodeLow(lrc);
   txBuffer[13] = 0x0d;
   txBuffer[14] = 0x0a;
-  txBuffer[15] = 0; // null to end as string
+  txBuffer[15] = 0;
+  
   //putCharToSerial(); // [jo:231005] original
   sendTxBufferToSerialUSB(); // [jo:231005] atualizado para 2024
 } // processWriteRegister
